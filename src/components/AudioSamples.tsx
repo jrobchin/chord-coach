@@ -3,16 +3,13 @@ import React from "react";
 import Sample from "./Sample";
 
 const SAMPLES_PATH = process.env.PUBLIC_URL + "/samples/";
-const SAMPLES: {[key: string]: string} = {
+const SAMPLES: { [key: string]: string } = {
   "a3": "a3.mp3",
   "a#3": "a-3.mp3",
   "a4": "a4.mp3",
   "a#4": "a-4.mp3",
-  "a5": "a5.mp3",
-  "a#5": "a-5.mp3",
   "b3": "b3.mp3",
   "b4": "b4.mp3",
-  "b5": "b5.mp3",
   "c3": "c3.mp3",
   "c#3": "c-3.mp3",
   "c4": "c4.mp3",
