@@ -1,19 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NoteState } from "./types";
+import { NoteState, NoteAction } from "./types";
 
 const initialState: NoteState = {
   notesOn: {},
+  lastAction: NoteAction.NONE,
 };
 
 const notesSlice = createSlice({
   name: "note",
   initialState,
   reducers: {
-    noteOn: (state, action: PayloadAction<string>) => {
+    noteOn: function (state, action: PayloadAction<string>) {
       state.notesOn[action.payload] = true;
+      state.lastAction = NoteAction.ON;
     },
-    noteOff: (state, action: PayloadAction<string>) => {
+    noteOff: function (state, action: PayloadAction<string>) {
       delete state.notesOn[action.payload];
+      state.lastAction = NoteAction.OFF;
     },
   },
 });

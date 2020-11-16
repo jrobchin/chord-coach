@@ -51,21 +51,19 @@ function MidiDriver({
       try {
         input = WebMidi.getInputById(selectedMidiDevice.id);
       } catch (error) {
-        console.error(error);
+        console.warn(error);
       }
 
       if (input !== false) {
         // Listen for noteon and update state
         input.removeListener("noteon", "all");
         input.addListener("noteon", "all", (event) => {
-          console.info(`noteon ${noteToID(event.note)}`);
           noteOn(noteToID(event.note));
         });
 
         // Listen for noteoff and update state
         input.removeListener("noteoff", "all");
         input.addListener("noteoff", "all", (event) => {
-          console.info(`noteoff ${noteToID(event.note)}`);
           noteOff(noteToID(event.note));
         });
       }

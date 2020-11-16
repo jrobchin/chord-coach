@@ -22,15 +22,13 @@ function Piano({ notesOn }: Props) {
         if (sample !== null) {
           sample.pause();
           sample.currentTime = 0;
-          sample.play();
-          console.info(`play sample: ${sampleId}, ${sample}`);
+          sample.play().catch(err => console.warn("Interact with the UI to play sounds"));
         }
 
         setNotesDown({
           ...notesDown,
           [note]: true
         });
-
       }
     }
 

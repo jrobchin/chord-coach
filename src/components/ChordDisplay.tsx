@@ -1,32 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { Box } from "@chakra-ui/react";
-import { Note, Chord } from "@tonaljs/tonal";
+import { Box, VStack, HStack, Text, Button, Switch } from "@chakra-ui/react";
 
 import { RootState } from "../store";
+import { clearChordHistory, setAutoClear } from "../store/chords/slice";
 
 const mapState = (state: RootState) => ({
-  notesOn: Object.keys(state.notes.notesOn).map(note => Note.get(note))
+  currentChord: state.chords.currentChord,
+  chordHistory: state.chords.chordHistory,
+  autoClear: state.chords.autoClear
 });
-const connector = connect(mapState);
+const mapDispatch = { clearChordHistory, setAutoClear };
+const connector = connect(mapState, mapDispatch);
 
 type Props = ConnectedProps<typeof connector>;
 
-function ChordDisplay({ notesOn }: Props) {
-  const [chord, setChord] = useState<string>("");
-
-  useEffect(() => {
-    // Sort by frequency
-    const notes = notesOn.slice().sort((a, b) => a.freq! - b.freq!);
-
-    // Detect and set the first chord. No good way of choosing which chord
-    // to use at his point.
-    setChord(Chord.detect(notes.map(note => note.name))[0]);
-  }, [notesOn, chord, setChord]);
-
+function ChordDisplay({ currentChord, chordHistory, autoClear, clearChordHistory, setAutoClear }: Props) {
   return (
     <Box p={6} borderWidth="1px" borderRadius="lg">
-      Chord: {chord}
+      <VStack align="flex-start">
+        <div>
+          <Text fontWeight={900} display="inline-block" mr={2}>
+            Chord:
+          </Text>
+          {currentChord?.symbol || "None"}
+        </div>
+        <div>
+          <Text fontWeight={900} mr={2}>Chord History:</Text>
+          <HStack spacing={3}>
+            <Button onClick={_ => clearChordHistory()}>Clear</Button>
+            <Box borderWidth="1px" borderRadius="lg" p="0.5rem">
+              {/* FIXME: Switch does not reflex autoClear value in store */}
+              Auto Clear: <Switch onChange={({ target }) => setAutoClear(target.checked)} />
+            </Box>
+          </HStack>
+
+          {chordHistory.map((chord, index) => <Text key={index}>{chord.symbol}</Text>)}
+        </div>
+      </VStack>
     </Box>
   );
 }

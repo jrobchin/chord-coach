@@ -13,7 +13,7 @@ const systemSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
-    setWebMidiEnabled: (state, action: PayloadAction<boolean>) => {
+    setWebMidiEnabled: function (state, action: PayloadAction<boolean>) {
       state.webMidiEnabled = action.payload;
 
       // Check if there is a cached Midi device
@@ -30,7 +30,7 @@ const systemSlice = createSlice({
         }
       }
     },
-    selectMidiDevice: (state, action: PayloadAction<string>) => {
+    selectMidiDevice: function (state, action: PayloadAction<string>) {
       const input = WebMidi.getInputById(action.payload);
       if (input !== false) {
         state.selectedMidiDevice = {
@@ -44,10 +44,13 @@ const systemSlice = createSlice({
         state.selectedMidiDevice = null;
       }
     },
-    setConnectedMidiDevice: (state, action: PayloadAction<MidiDevice[]>) => {
+    setConnectedMidiDevice: function (
+      state,
+      action: PayloadAction<MidiDevice[]>
+    ) {
       state.connectedMidiDevices = action.payload;
     },
-    setRefreshMidiDevices: (state, action: PayloadAction<boolean>) => {
+    setRefreshMidiDevices: function (state, action: PayloadAction<boolean>) {
       state.refreshMidiDevices = action.payload;
     },
   },
